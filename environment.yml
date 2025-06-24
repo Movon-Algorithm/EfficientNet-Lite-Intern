@@ -1,0 +1,15 @@
+name: efficientnet-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - numpy=1.22.3
+  - pillow=10.0.0
+  - pip
+  - cudatoolkit=11.3.1
+  - cudnn=8.2.1
+  - pip:
+      - torch==1.10.2
+      - torchvision==0.11.3
+      - opencv-python==4.4.0.46
