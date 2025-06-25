@@ -14,4 +14,5 @@ CUDA_VISIBLE_DEVICES=1 python train.py \
   --label_smooth 0.1 \
   --num_workers 4 \
   --save ./models \
-  --save_epoch_interval 10
+  --save_epoch_interval 10 \
+  --resume ./models/efficientnet_lite0.pt
