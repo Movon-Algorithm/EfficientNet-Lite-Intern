@@ -14,8 +14,10 @@ from utils.train_utils import accuracy, AvgrageMeter, CrossEntropyLabelSmooth, s
 
 # 기본 설정 동일
 CROP_PADDING = 32
-MEAN_RGB = [0.498, 0.498, 0.498]
-STDDEV_RGB = [0.502, 0.502, 0.502]
+# MEAN_RGB = [0.498, 0.498, 0.498]
+# STDDEV_RGB = [0.502, 0.502, 0.502]
+MEAN_RGB = [0.485, 0.456, 0.406]
+STDDEV_RGB = [0.229, 0.224, 0.225]
 
 class DataIterator:
     def __init__(self, dataloader):
@@ -77,9 +79,7 @@ def main():
         device = torch.device('cuda:0')
 
     train_dataset = datasets.ImageFolder(args.train_dir, transforms.Compose([
-        transforms.RandomResizedCrop(input_size),
-        transforms.ColorJitter(0.4, 0.4, 0.4),
-        transforms.RandomHorizontalFlip(),
+        transforms.Resize((input_size, input_size), interpolation=PIL.Image.BICUBIC),
         transforms.ToTensor(),
         transforms.Normalize(MEAN_RGB, STDDEV_RGB),
     ]))
@@ -87,9 +87,8 @@ def main():
         shuffle=True, num_workers=args.num_workers, pin_memory=use_gpu)
     train_dataprovider = DataIterator(train_loader)
 
-    val_dataset = datasets.ImageFolder(args.val_dir, transforms.Compose([
-        transforms.Resize(input_size + CROP_PADDING, interpolation=PIL.Image.BICUBIC),
-        transforms.CenterCrop(input_size),
+    val_dataset = datasets.ImageFolder(args.val_dir,transforms.Compose([
+        transforms.Resize((input_size, input_size), interpolation=PIL.Image.BICUBIC),
         transforms.ToTensor(),
         transforms.Normalize(MEAN_RGB, STDDEV_RGB),
     ]))
